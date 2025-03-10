@@ -1,0 +1,305 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Animated Gradient Background */
+        @keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(-45deg, #B0E0E6, #FFC0CB, #FFDAB9);
+    background-size: 300% 300%;
+    animation: gradientAnimation 8s ease infinite;
+    height: 100vh; /* Ensure it covers full screen */
+    margin: 0;
+    padding: 0;
+}
+
+        /* Product Grid */
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        /* Product Card Styling */
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 250px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background: linear-gradient(135deg, #B0E0E6, #FFC0CB, #FFA07A); /* Matching the background */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Product Image */
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.6); /* Soft white overlay for clarity */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Product Details */
+        .card-body {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #3A6B7E;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Price & Buttons */
+        .card-footer {
+            padding: 10px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.3);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            width: 100%;
+        }
+
+        .card-footer h5 {
+            color: #d9534f;
+            font-size: 18px;
+        }
+
+        /* Buttons */
+        .btn-outline-secondary {
+            font-size: 13px;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            color: #3A6B7E;
+        }
+
+        .btn-outline-secondary:hover {
+            background: #66A1B8;
+            color: white;
+        }
+
+    
+/* Filter Button - Matching Background */
+.filter-btn {
+    position: fixed;
+    top: 85px;
+    left: 240px;
+    background: linear-gradient(135deg, #B0E0E6, #FFC0CB); /* Matches background */
+    color: #3A6B7E; /* Darker shade for contrast */
+    padding: 12px 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* Hover Effect */
+.filter-btn:hover {
+    background: linear-gradient(135deg, #A0D0D6, #F8A0B0); /* Slightly darker for effect */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+
+
+  /* Filter Dropdown - Styled */
+.filter-dropdown {
+    position: fixed;
+    top: 130px;
+    left: 100px;
+    background: rgba(255, 255, 255, 0.9); /* Slight transparency */
+    border-radius: 12px;
+    padding: 15px;
+    z-index: 9999;
+    display: none;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    width: 220px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Show animation */
+.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(5px);
+}
+
+/* Filter Title */
+.filter-dropdown h2 {
+    font-size: 18px;
+    color: #3A6B7E;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #B0E0E6;
+    padding-bottom: 5px;
+}
+
+/* Input & Checkbox Styling */
+.filter-dropdown input[type="text"] {
+    width: calc(100% - 10px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+/* Checkbox Styling */
+.filter-dropdown input[type="checkbox"] {
+    accent-color: #3A6B7E; /* Styled checkboxes */
+    transform: scale(1.2);
+    margin-right: 8px;
+}
+
+/* Apply Button */
+.filter-dropdown button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #B0E0E6, #FFC0CB);
+    color: #3A6B7E;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-dropdown button:hover {
+    background: linear-gradient(135deg, #A0D0D6, #F8A0B0);
+    transform: scale(1.05);
+}
+
+
+        /* Button Styling */
+        .btn-outline-secondary {
+            color: #212529;
+            background-color: #fff;
+            border-color: #ABCCD8;
+        }
+
+        .btn-outline-secondary:hover {
+            color: #212529;
+            background-color: #66A1B8;
+            border-color: #66A1B8;
+        }
+
+ 
+    </style>
+</head>
+
+<body>
+
+<!-- Filter Toggle Button -->
+<button id="filter-btn" class="filter-btn">📊 Filter</button>
+<div id="filter-dropdown" class="filter-dropdown">
+    <form method="get" action="{% url 'contents' %}">
+        <h2>Item</h2>
+        <input type="text" placeholder="Item" name="q">
+        <h2>Stores</h2>
+        <input type="checkbox" name="Tesco"> Tesco<br>
+        <input type="checkbox" name="Waitrose"> Waitrose<br>
+        <input type="checkbox" name="Morrisons"> Morrisons<br>
+        <input type="checkbox" name="Sainsburys"> Sainsbury's<br>
+        <h2>Price</h2>
+        <input type="text" placeholder="Min" name="min_price" size="5"> -
+        <input type="text" placeholder="Max" name="max_price" size="5"><br><br>
+        <button type="submit">Apply</button>
+    </form>
+</div>
+
+
+
+
+
+
+<!-- Search Bar (Moved to Top Right) -->
+<div style="position: absolute; top: 75px; right: 140px;">
+    {% include 'searchbar.html' %}
+</div>
+
+<br><br>
+
+<!-- Product Grid -->
+<div class="product-container">
+    {% for product in products %}
+    <div class="card">
+        <img class="card-img-top" src="{{ product.imageURL }}" alt="{{ product.name }}">
+        <div class="card-body">
+            <h6 class="card-title"><strong>{{ product.store }}</strong></h6>
+            <hr>
+            <p class="card-text">{{ product.name }}</p>
+        </div>
+        <div class="card-footer">
+            <h5><strong>₹{{ product.price_inr }}</strong></h5>
+            {% if product.id in items %}
+                <button data-product="{{ product.id }}" data-action="remove" class="btn btn-outline-secondary btn-sm update-cart">-</button>
+                <p style="display: inline"><strong>{{ items|get_item:product.id }}</strong></p>
+                <button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary btn-sm update-cart">+</button>
+            {% else %}
+                <button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary btn-sm update-cart">Add To Basket</button>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- JavaScript to Toggle Filter -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+        const filterButton = document.getElementById("filter-btn");
+        const filterDropdown = document.getElementById("filter-dropdown");
+
+        filterButton.addEventListener("click", function(event) {
+            event.stopPropagation(); // Prevents event from reaching document click listener
+            filterDropdown.classList.toggle("show");
+        });
+
+        // Close filter when clicking outside
+        document.addEventListener("click", function(event) {
+            if (!filterDropdown.contains(event.target) && !filterButton.contains(event.target)) {
+                filterDropdown.classList.remove("show");
+            }
+        });
+    });
+
+
+
+</script>
+
+</body>
+
+{% endblock content %}

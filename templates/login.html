@@ -1,0 +1,245 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Background Animation */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Centering Everything */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Particle Background */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+       
+
+        /* Home Button */
+.home-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: #ff4081;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+/* Change text color on hover */
+.home-btn:hover {
+    background: #ff245f;
+    color: yellow;  /* Change text color */
+}
+
+/* Add animation effect */
+@keyframes textColorChange {
+    0% { color: white; }
+    50% { color: cyan; }
+    100% { color: white; }
+}
+
+/* Apply animation when the button is clicked */
+.home-btn:active {
+    animation: textColorChange 0.8s ease-in-out;
+}
+
+        
+        .home-btn:hover {
+            background: #ff245f;
+        }
+
+        /* Centered Login Container */
+        .login-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.9);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 320px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+}
+
+
+        .login-container h2 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .input:focus {
+            outline: 2px solid #ff758c;
+        }
+
+        .input--submit {
+            background: #ff758c;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .input--submit:hover {
+            background: #ff5277;
+        }
+
+        .text--small {
+            font-size: 14px;
+            color: #666;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .text--small:hover {
+            color: #ff5277;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Particle Animation Canvas -->
+<canvas id="particleCanvas"></canvas>
+
+<!-- Home Button -->
+<a href="{% url 'home' %}" class="home-btn">🏠 Home</a>
+
+
+<!-- Centered Login Form -->
+<div class="login-container">
+    <h2>Login</h2>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <input type="text" placeholder="Username" name="username" class="input" required>
+        <input type="password" placeholder="Password" name="password" class="input" required>
+
+        {% for message in messages %}
+            <p style="color: red;">{{ message }}</p>
+        {% endfor %}
+
+        <input type="submit" value="Log in" class="input input--submit">
+    </form>
+    <a href="{% url 'register' %}" class="text--small">New? <b>Sign up</b></a>
+</div>
+
+<!-- Particle Animation Script -->
+<script>
+    const canvas = document.getElementById("particleCanvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particlesArray;
+
+    class Particle {
+        constructor(x, y, size, speedX, speedY) {
+            this.x = x;
+            this.y = y;
+            this.size = size;
+            this.speedX = speedX;
+            this.speedY = speedY;
+        }
+
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+
+            if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+            if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+        }
+
+        draw() {
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function init() {
+        particlesArray = [];
+        for (let i = 0; i < 100; i++) {
+            let size = Math.random() * 3 + 1;
+            let x = Math.random() * canvas.width;
+            let y = Math.random() * canvas.height;
+            let speedX = (Math.random() * 0.5) - 0.25;
+            let speedY = (Math.random() * 0.5) - 0.25;
+            particlesArray.push(new Particle(x, y, size, speedX, speedY));
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+            particlesArray[i].draw();
+        }
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("resize", function () {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
+    });
+
+    init();
+    animate();
+</script>
+
+</body>
+</html>
+
+{% endblock content %}

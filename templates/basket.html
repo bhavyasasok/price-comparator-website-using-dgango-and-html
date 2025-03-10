@@ -1,0 +1,120 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Animated Gradient Background */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #B0E0E6, #FFC0CB, #FFA07A);
+            background-size: 300% 300%;
+            animation: gradientAnimation 8s ease infinite;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Basket Container Styling */
+        .box-element {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        /* Cart Row Styling */
+        .cart-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-row:last-child {
+            border-bottom: none;
+        }
+
+        .row-image {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 5px;
+        }
+
+        /* Button Styling */
+        .btn-outline-dark {
+            color: white;
+            background: linear-gradient(135deg, #FFA07A, #FFC0CB);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline-dark:hover {
+            background: linear-gradient(135deg, #FF8C66, #FFB6C1);
+            transform: scale(1.05);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .quantity {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+
+<div class="box-element text-center">
+    <a class="btn btn-outline-dark" href="{% url 'cheapest_price' %}">Find Cheapest Price</a>
+</div>
+
+<div class="box-element text-center">
+    <a class="btn btn-outline-dark" href="{% url 'contents' %}">Continue Shopping</a>
+</div>
+
+<div class="box-element">
+    <div class="cart-row">
+        <div style="flex:2"></div>
+        <div style="flex:2"><strong>Item</strong></div>
+        <div style="flex:1"><strong>Price</strong></div>
+        <div style="flex:1"><strong>Quantity</strong></div>
+        <div style="flex:1"><strong>Total</strong></div>
+    </div>
+
+    {% for item in items %}
+    <div class="cart-row">
+        <div style="flex:2"><img class="row-image" src="{{ item.product.imageURL }}"></div>
+        <div style="flex:2"><p>{{ item.product.name }}</p></div>
+        <div style="flex:1"><p>₹{{ item.product.price|floatformat:2 }}</p></div>
+        <div style="flex:1">
+            <div class="inline-block">
+                <img data-product="{{ item.product.id }}" data-action="remove" class="chg-quantity update-cart" src="{% static 'images/remove.png' %}">
+            </div>
+            <p class="quantity">&nbsp;&nbsp;{{ item.quantity }}</p>
+            <div class="inline-block">
+                <img data-product="{{ item.product.id }}" data-action="add" class="chg-quantity update-cart" src="{% static 'images/add.png' %}">
+            </div>
+        </div>
+        <div style="flex:1"><p>₹{{ item.get_total }}</p></div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

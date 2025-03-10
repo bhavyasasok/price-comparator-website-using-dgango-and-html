@@ -1,0 +1,409 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Comparator</title>
+
+    <style>
+        /* Background Gradient */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffdde1, #a18cd1, #fbc2eb);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes fadeInBounce {
+        0% {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        50% {
+            transform: translateY(10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideIn {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .home-content {
+        text-align: center;
+    }
+
+    .home-content h1 {
+        font-size: 2.5em;
+        color: white;
+        animation: fadeInBounce 1.5s ease-out;
+    }
+
+    .home-content p {
+        font-size: 1.2em;
+        color: white;
+        animation: slideIn 1.5s ease-out;
+        animation-delay: 0.5s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+    }
+
+        /* Navbar Styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo img {
+            width: 120px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            padding: 0;
+        }
+
+        .nav-links li {
+            display: inline;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.3s;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #ff9a9e;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        /* Buttons */
+        .login-btn, .logged-in-btn, .next-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+            backdrop-filter: blur(5px);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .login-btn:hover, .next-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .logged-in-btn {
+            background: rgba(0, 255, 0, 0.3);
+            cursor: default;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Home Section */
+        .home, .about-section {
+            text-align: center;
+            padding: 100px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .home-content {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px 40px;
+            border-radius: 15px;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+        }
+
+        .home-logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: white;
+        }
+
+        p {
+            color: white;
+            font-size: 1.2em;
+        }
+
+        /* About Section */
+        .about-section {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            margin: 20px auto;
+            max-width: 700px;
+        }
+/* Support Section Styling */
+.support-section {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: none;
+    z-index: 999;
+}
+
+.support-content h2, .support-content h3 {
+    color: #ff4a57;
+}
+
+.support-content p, .support-content li {
+    color: #333;
+    font-size: 1.1em;
+}
+
+.support-content a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.support-content a:hover {
+    text-decoration: underline;
+}
+
+.close-btn {
+    background: #ff4a57;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    background: #d93645;
+}
+
+/* Show the support section */
+.show {
+    display: block;
+}
+
+        .about-section h2 {
+            color: #fff;
+        }
+
+        /* Particle Animation */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="{% static 'images/pricewise-logo.png' %}" alt="PriceWise Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showSection('home')">Home</a></li>
+            <li><a href="#" onclick="showSection('about')">About</a></li>
+            <li><a href="#" onclick="showSupport()">Support</a></li>
+
+            <li><a href="#" onclick="showContact()">Contact</a></li>
+
+        </ul>
+
+        {% if user.is_authenticated %}
+            <span class="logged-in-btn">Logged in</span>
+            <a href="{% url 'contents' %}" class="next-btn">Next →</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="login-btn">Log in</a>
+        {% endif %}
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="home">
+        <div class="home-content">
+            <img src="{% static 'images/pricewise-logo.png' %}" alt="PriceWise Logo" class="home-logo">
+            <h1>Welcome to PriceWise</h1>
+            <p>Swipe the savings, not your card!</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <h2>About PriceWise</h2>
+        <p>Tired of searching multiple websites to find the best price? Our price comparison platform does the work for you! Instantly compare prices from different online stores, helping you make smarter shopping decisions and save money effortlessly. With just one search, you get the best deals at your fingertips—because finding the lowest price should be easy!</p>
+    </section>
+    <!-- Support Section -->
+<section id="support" class="support-section hidden">
+    <div class="support-content">
+        <h2>Need Help? We’re Here for You!</h2>
+        <p>At <strong>PriceWise</strong>, we strive to make your shopping experience smooth and hassle-free.</p>
+        
+        <h3>📌 Frequently Asked Questions (FAQ)</h3>
+        <div class="faq">
+            <p>💡 <strong>How does PriceWise work?</strong><br>We scan multiple online stores in real-time and display the best prices for your chosen product.</p>
+            <p>💡 <strong>Why do prices change frequently?</strong><br>Prices may vary due to discounts, promotions, or stock availability on different websites.</p>
+            <p>💡 <strong>How do I report incorrect prices?</strong><br>Click the <strong>“Report Issue”</strong> button or email us at <a href="mailto:support@pricewise.com">support@pricewise.com</a>.</p>
+        </div>
+
+       
+        <button class="close-btn" onclick="hideSupport()">Close</button>
+    </div>
+</section>
+<!-- Contact Section -->
+<section id="contact" class="support-section">
+    <div class="support-content">
+        <h2>💬 Need Help? We’re Here for You!</h2>
+        <p>At <strong>PriceWise</strong>, we believe shopping should be easy, transparent, and stress-free. If you have any questions or need assistance, you’re in the right place!</p>
+
+        <h3>📞 Contact Our Support Team</h3>
+        <p>📧 <strong>Email Us:</strong> <a href="mailto:support@pricewise.com">support@pricewise.com</a></p>
+        <p>💬 <strong>Live Chat:</strong> Available 24/7 on our website</p>
+        <p>📞 <strong>Call Us:</strong> +1 (123) 456-7890 (9 AM - 6 PM)</p>
+
+        <button class="close-btn" onclick="hideContact()">Close</button>
+    </div>
+</section>
+
+<script>
+    function showContact() {
+        document.getElementById('contact').style.display = 'block';
+    }
+
+    function hideContact() {
+        document.getElementById('contact').style.display = 'none';
+    }
+</script>
+
+
+    <!-- Particle Animation -->
+    <canvas id="particles"></canvas>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const canvas = document.getElementById("particles");
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let particlesArray = [];
+
+            class Particle {
+                constructor(x, y, size, speedX, speedY) {
+                    this.x = x;
+                    this.y = y;
+                    this.size = size;
+                    this.speedX = speedX;
+                    this.speedY = speedY;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                }
+                draw() {
+                    ctx.fillStyle = "rgba(255,255,255,0.7)";
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+            }
+
+            function initParticles() {
+                particlesArray = [];
+                for (let i = 0; i < 150; i++) {
+                    let size = Math.random() * 5 + 1;
+                    let x = Math.random() * canvas.width;
+                    let y = Math.random() * canvas.height;
+                    let speedX = (Math.random() * 1) - 0.5;
+                    let speedY = (Math.random() * 1) - 0.5;
+                    particlesArray.push(new Particle(x, y, size, speedX, speedY));
+                }
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particlesArray.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animateParticles);
+            }
+
+            initParticles();
+            animateParticles();
+        });
+
+        function showSection(id) {
+            document.getElementById('home').style.display = id === 'home' ? 'block' : 'none';
+            document.getElementById('about').style.display = id === 'about' ? 'block' : 'none';
+        }
+        function showSupport() {
+    document.getElementById('support').style.display = 'block';
+}
+
+function hideSupport() {
+    document.getElementById('support').style.display = 'none';
+}
+
+    </script>
+
+</body>
+</html>

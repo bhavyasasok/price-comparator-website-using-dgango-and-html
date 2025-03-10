@@ -1,0 +1,156 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Gradient animation background */
+        body {
+            background: linear-gradient(-45deg, #B0E0E6, #FFB6C1, #FFA500);
+            background-size: 400% 400%;
+            animation: gradientBG 8s ease infinite;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Styled continue shopping button */
+        .btn-continue {
+            color: white;
+            background: linear-gradient(45deg, #FFB6C1, #FFA500);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-continue:hover {
+            background: linear-gradient(45deg, #FFA07A, #FF8C00);
+            transform: scale(1.05);
+        }
+
+        /* Product alignment */
+        .box-element {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-row img {
+            max-width: 80px;
+            border-radius: 10px;
+        }
+
+        .cart-row p {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #222;
+        }
+    </style>
+</head>
+
+<!-- Continue Shopping Button -->
+<div class="text-center">
+    <a class="btn-continue" href="{% url 'contents' %}">Continue Shopping</a>
+</div>
+
+<!-- Supermarket Comparison Tables -->
+<div class="container mt-4">
+    <div class="row">
+        <!-- Tesco -->
+        <div class="col-lg-6">
+            <div class="box-element">
+                <h1>Tesco</h1>
+                {% for item in items %}
+                    <div class="cart-row">
+                        <div style="flex:2"><img class="row-image" src="{{ item.product.imageURL }}"></div>
+                        <div style="flex:2"><p>{{ item.product.name }}</p></div>
+                        <div style="flex:1"><p>₹{{ item.product.price|floatformat:2 }}</p></div>
+                        <div style="flex:1"><p class="quantity">&nbsp;&nbsp;{{ item.quantity }}</p></div>
+                        <div style="flex:1"><p>₹{{ item.get_total }}</p></div>
+                    </div>
+                {% endfor %}
+                <h4>Total price: ₹{{ order.get_total_price_tesco }}</h4>
+            </div>
+        </div>
+
+        <!-- Morrisons -->
+        <div class="col-lg-6">
+            <div class="box-element">
+                <h1>Morrisons</h1>
+                {% for item in items %}
+                    <div class="cart-row">
+                        <div style="flex:2"><img class="row-image" src="{{ item.product.imageURL }}"></div>
+                        <div style="flex:2"><p>{{ item.product.name }}</p></div>
+                        <div style="flex:1"><p>₹{{ item.product.price|floatformat:2 }}</p></div>
+                        <div style="flex:1"><p class="quantity">&nbsp;&nbsp;{{ item.quantity }}</p></div>
+                        <div style="flex:1"><p>₹{{ item.get_total }}</p></div>
+                    </div>
+                {% endfor %}
+                <h4>Total price: ₹{{ order.get_total_price_morrisons }}</h4>
+            </div>
+        </div>
+
+        <!-- Waitrose -->
+        <div class="col-lg-6">
+            <div class="box-element">
+                <h1>Waitrose</h1>
+                {% for item in items %}
+                    <div class="cart-row">
+                        <div style="flex:2"><img class="row-image" src="{{ item.product.imageURL }}"></div>
+                        <div style="flex:2"><p>{{ item.product.name }}</p></div>
+                        <div style="flex:1"><p>₹{{ item.product.price|floatformat:2 }}</p></div>
+                        <div style="flex:1"><p class="quantity">&nbsp;&nbsp;{{ item.quantity }}</p></div>
+                        <div style="flex:1"><p>₹{{ item.get_total }}</p></div>
+                    </div>
+                {% endfor %}
+                <h4>Total price: ₹{{ order.get_total_price_waitrose }}</h4>
+            </div>
+        </div>
+
+        <!-- Sainsburys -->
+        <div class="col-lg-6">
+            <div class="box-element">
+                <h1>Sainsburys</h1>
+                {% for item in items %}
+                    <div class="cart-row">
+                        <div style="flex:2"><img class="row-image" src="{{ item.product.imageURL }}"></div>
+                        <div style="flex:2"><p>{{ item.product.name }}</p></div>
+                        <div style="flex:1"><p>₹{{ item.product.price|floatformat:2 }}</p></div>
+                        <div style="flex:1"><p class="quantity">&nbsp;&nbsp;{{ item.quantity }}</p></div>
+                        <div style="flex:1"><p>₹{{ item.get_total }}</p></div>
+                    </div>
+                {% endfor %}
+                <h4>Total price: ₹{{ order.get_total_price_sainsburys }}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
