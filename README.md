@@ -95,7 +95,7 @@ pricewise/
 
 ## 📚 References
 
-See the full list of academic and technical references in the [project report (PDF)](./PRICEWISE_17_removed.pdf).
+See the full list of academic and technical references in the [project report (PDF)](./PPRICEWISE_17_removed.pdf).
 
 ---
 
